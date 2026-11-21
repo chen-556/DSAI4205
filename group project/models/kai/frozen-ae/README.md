@@ -60,3 +60,16 @@ python 'G:/E-learn/dsai4205/group project/models/kai/frozen-ae/write_report.py' 
 离线检查：`python -B models/kai/frozen-ae/test_ae.py`。它检查旧划分一致性、缓存输入隔离和复用、冻结无梯度提取、仅训练集拟合 scaler；不下载预训练权重、不调用教师，也不训练正式数据集。
 
 参考：[Qwen3-Embedding 模型卡](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B)、[PyTorch CUDA 安装](https://pytorch.org/get-started/previous-versions/)、[Vast RTX 5 系列说明](https://github.com/vast-ai/docs/blob/main/rtx-5-series.mdx)。
+
+## 首轮正式运行：2026-11-21
+
+运行 ID：`20261121T101025_214748Z`，代码提交 `863cd2e`，单张 RTX 5090，PyTorch 2.7.1+cu128，seed 42。模型全程冻结、教师调用 0 次；远程进程正常退出，27 个结果文件已下载并逐个校验 SHA-256。
+
+| 组别 | 验证 macro-F1 | 最佳 MLP epoch | 测试 macro-F1 | 测试 accuracy |
+|---|---:|---:|---:|---:|
+| A：Qwen3-0.6B＋MLP | 0.4157 | 1 | 0.4678 | 0.5290 |
+| E：Qwen3-Embedding-0.6B＋MLP | 0.5292 | 3 | 0.4783 | 0.5063 |
+
+E−A 的测试 macro-F1 差值为 +0.0105，1000 次配对 bootstrap 的 95% 区间为 [-0.0472, 0.0644]，跨过零，不能据此断言 E 稳定更好。E 的 Irrelevant F1 从 0.1556 升至 0.3492，Neutral 从 0.5143 升至 0.5545；Positive 则从 0.5628 降至 0.3784。平均指标掩盖了类别间的取舍，下一步应先按预定配置验证多种子稳定性，再设计监督适配模块，不能根据这次测试结果反复选择参数。
+
+划分指纹为 `e7fc1c5525dc8d9316e755c67b47dbe574115ef68959f0f33ece2e732f1f5bfb`。完整实验数据保存在本地 `runs/kai/qwen_frozen_ae_runs/20261121T101025_214748Z/`；HTML 报告保存在 `E:/DSAI4205/Kai_AE/`。本次租用实例已释放。
