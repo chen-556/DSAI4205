@@ -1,5 +1,7 @@
 # Kai 的情感分类模型
 
+**无需教师缓存的 A、E 两组入口：** 使用 `python models/kai/run_frozen_ae.py --arms A E --seeds 42`，比较冻结 Qwen3-0.6B 与冻结 Qwen3-Embedding-0.6B，分别训练相同结构的独立 MLP。仅此入口不依赖教师缓存，也不执行或改写统一 notebook。[安装、运行、续跑与 E 盘报告说明](frozen-ae/README.md)。输出位于 `runs/kai/qwen_frozen_ae_runs/`。
+
 本实验研究在只有几百条标注推文时，教师模型提供的短解释和情感翻转样本能否改善 Qwen3-0.6B 的四分类表现。标签编码为 0（Negative）、1（Positive）、2（Irrelevant）、3（Neutral）。
 
 原来的三组实验用 Qwen 解码器对四个标签代码打分，改变训练监督。新增 `embedding-mlp` 模式将表示模型与分析模型分开：先适配并冻结 Qwen，提取上下文文本向量，再单独训练 MLP 分类器。五种表示设置共用同一种 MLP，属于一个分析模型的对照实验，不能计作五种不同分析模型。[课程建模要求](../../Project%20description%20%281%29.pdf)

@@ -1,0 +1,9 @@
+# Install CUDA-enabled PyTorch separately; do not replace a working 5090 build.
+transformers==4.57.1
+accelerate==1.10.1
+numpy==2.0.2
+pandas==2.2.3
+scikit-learn==1.6.1
+ftfy==6.3.1
+joblib==1.5.2
+threadpoolctl==3.6.0

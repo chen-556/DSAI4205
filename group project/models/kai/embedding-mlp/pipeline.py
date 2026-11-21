@@ -115,7 +115,7 @@ def feature_cache(cache_root, spec, frame, input_ids, truncated, compute):
         raise ValueError("特征提取只接受唯一 row_id 与 text，不接受标签或教师解释。")
     if len(frame) != len(input_ids) or len(frame) != len(truncated):
         raise ValueError("输入行数与 token 数组不匹配。")
-    ids = frame.row_id.astype(str).to_numpy()
+    ids = frame.row_id.astype(str).to_numpy(dtype=str)
     signature = {"schema": 1, "representation": spec,
                  "rows": frame.astype(str).to_dict("records"), "input_ids": input_ids,
                  "truncated": [bool(x) for x in truncated]}

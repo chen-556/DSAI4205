@@ -1,0 +1,8 @@
+.ae-test-deps/
+.ae-env/
+__pycache__/
+.env
+.env.*
+!.env.example
+*.key
+*.pem
